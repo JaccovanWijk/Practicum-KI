@@ -91,7 +91,6 @@ def depthFirstSearch(problem):
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    """ test""" 
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
