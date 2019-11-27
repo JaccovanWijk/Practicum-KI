@@ -88,41 +88,43 @@ def depthFirstSearch(problem):
     
     "*** YOUR CODE HERE ***"   
 
+    path = []
+    closedList =[]
     if problem.isGoalState(problem.getStartState()):
-        return 0
+        return path
 
     openList = util.Stack() 
-    #add all successors to openList 
-    for successor in problem.getSuccessors(problem.getStartState()):
-        openList.push(successor)   
-    #to do closed list 
-    path = []
-    currentState = openList.pop()
+    openList.push(problem.getStartState())    
 
-    while not problem.isGoalState(currentState[0]):
-        print "currentstate", currentState
-        for successor in problem.getSuccessors(currentState[0]):
-            openList.push(successor)
-        currentState = openList.pop()
+    while not openList.isEmpty():
+        currentState = openList.pop()        
+        print "current", currentState[0]
+        if problem.isGoalState(currentState[0]):
+            for statedirection in openList:  
+                path.append(statedirection[1])
+            print "goal", path
+            return path      
+        if currentState not in closedList:
+            closedList.append(currentState)
+            for successor in problem.getSuccessors(currentState[0]):
+                openList.push(successor)     
+       
+
+       
     
-
     print "path", len(path)
     return path
-    # while not openList.isEmpty():
-        
-    #     currentState = openList.pop()
-    #     print "current", currentState[0]
-    #     if problem.isGoalState(currentState[0]):
-    #         for statedirection in openList:
-    #             path.append(statedirection[1])
-    #         print "goal", path
-    #         return path
-    #     for successor in problem.getSuccessors(currentState[0]):
-    #         openList.push(successor) 
 
+ # #add all successors to openList 
+    # for successor in problem.getSuccessors(problem.getStartState()):
+    #     openList.push(successor)   
     
 
-
+    # while not problem.isGoalState(currentState[0]):
+    #     print "currentstate", currentState
+    #     for successor in problem.getSuccessors(currentState[0]):
+    #         openList.push(successor)
+    #     currentState = openList.pop()  
 
 
 def breadthFirstSearch(problem):
