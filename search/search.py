@@ -81,50 +81,52 @@ def depthFirstSearch(problem):
 
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
-    """
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    # """
+    # print "Start:", problem.getStartState()
+    # print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    # print "Start's successors:", problem.getSuccessors(problem.getStartState())
     
     "*** YOUR CODE HERE ***"   
 
     path = []
-    closedList =[]
+    closedList = []
     if problem.isGoalState(problem.getStartState()):
         return path
 
     openList = util.Stack() 
-    openList.push(problem.getStartState())    
+    startState = ((problem.getStartState()), 'start', 1, [])
+    # print "startstate0", startState[0]
+    # print "startstate3", startState[3]
 
-    while not openList.isEmpty():
-        currentState = openList.pop()        
-        print "current", currentState[0]
+    openList.push(startState)
+
+    while not openList.isEmpty():       
+        currentState = openList.pop()               
         if problem.isGoalState(currentState[0]):
-            for statedirection in openList:  
-                path.append(statedirection[1])
-            print "goal", path
+            path = [element for element in currentState[3]]
+            path.append(currentState[1])                       
+            path.pop(0)       
+            #print "goal", path            
             return path      
-        if currentState not in closedList:
-            closedList.append(currentState)
-            for successor in problem.getSuccessors(currentState[0]):
-                openList.push(successor)     
-       
+        if currentState[0] not in closedList:
+            #print "current", currentState[0]   
+            closedList.append(currentState[0])  
+            path = [element for element in currentState[3]]
+            path.append(currentState[1])                     
+           # print "lijst", closedList
+            for nextState in problem.getSuccessors(currentState[0]):     
+                # print "currentstae 2", currentState[3]
+                # path = currentState[3]
+                nextState = (nextState[0], nextState[1], nextState[2], path)                
+                openList.push(nextState) 
+            
+        
+         
 
-       
+   
     
-    print "path", len(path)
-    return path
 
- # #add all successors to openList 
-    # for successor in problem.getSuccessors(problem.getStartState()):
-    #     openList.push(successor)   
-    
 
-    # while not problem.isGoalState(currentState[0]):
-    #     print "currentstate", currentState
-    #     for successor in problem.getSuccessors(currentState[0]):
-    #         openList.push(successor)
-    #     currentState = openList.pop()  
 
 
 def breadthFirstSearch(problem):
