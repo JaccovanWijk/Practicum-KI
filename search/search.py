@@ -130,7 +130,6 @@ def depthFirstSearch(problem):
 
 
 def breadthFirstSearch(problem):
-    def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     #Make queue for states to visit
     openStates = util.Queue()
