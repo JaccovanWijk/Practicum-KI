@@ -119,55 +119,81 @@ def depthFirstSearch(problem):
                 # path = currentState[3]
                 nextState = (nextState[0], nextState[1], nextState[2], path)                
                 openList.push(nextState) 
-            
-        
          
-
-   
-    
-
-
-
-
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    #Make queue for states to visit
-    openStates = util.Queue()
-    #Make dict for visited states
-    startState = problem.getStartState()
-    closedStates = [startState]
-    
-    #Push first possible steps into queue
-    nextStates = problem.getSuccessors(startState)
-    for state, direction, cost in nextStates:
-        openStates.push((state, [direction]))
-        
-    #Do breadth-first search untill you find the endstate
-    while not openStates.isEmpty():
-        #Get current state
-        currentState, currentPath = openStates.pop()
-        
-        #Stop if current state is goal state
-        if problem.isGoalState(currentState):
-            return currentPath
-        
-        #Add new states to queue
-        newStates = problem.getSuccessors(currentState)
-        for newState, newDirection, value in newStates:
-            #Make a copy of the current path
-            newPath = []
-            for step in currentPath:
-                newPath.append(step)
-                
-            #Check if there is a valid successor
-            if newState not in closedStates:
-                newPath.append(newDirection)
-                openStates.push((newState, newPath))
-        
-        #Close current state
-        closedStates.append(currentState)
-        
-    return []
+# =============================================================================
+#     #Make queue for states to visit
+#     openStates = util.Queue()
+#     #Make dict for visited states
+#     startState = problem.getStartState()
+#     closedStates = [startState]
+#     
+#     #Push first possible steps into queue
+#     nextStates = problem.getSuccessors(startState)
+#     for state, direction, cost in nextStates:
+#         openStates.push((state, [direction]))
+#         
+#     #Do breadth-first search untill you find the endstate
+#     while not openStates.isEmpty():
+#         #Get current state
+#         currentState, currentPath = openStates.pop()
+#         
+#         #Stop if current state is goal state
+#         if problem.isGoalState(currentState):
+#             return currentPath
+#         
+#         #Add new states to queue
+#         newStates = problem.getSuccessors(currentState)
+#         for newState, newDirection, value in newStates:
+#                           
+#             #Check if there is a valid successor
+#             if newState not in closedStates:
+#                 #Make a copy of the current path
+#                 newPath = []
+#                 for step in currentPath:
+#                     newPath.append(step)
+#                 
+#                 newPath.append(newDirection)
+#                 openStates.push((newState, newPath))
+#         
+#         #Close current state
+#         closedStates.append(currentState)
+#         
+#     return []
+# =============================================================================
+
+    path = []
+    closedList = []
+    if problem.isGoalState(problem.getStartState()):
+        return path
+
+    openList = util.Queue() 
+    startState = ((problem.getStartState()), 'start', 1, [])
+    # print "startstate0", startState[0]
+    # print "startstate3", startState[3]
+
+    openList.push(startState)
+
+    while not openList.isEmpty():       
+        currentState = openList.pop()               
+        if problem.isGoalState(currentState[0]):
+            path = [element for element in currentState[3]]
+            path.append(currentState[1])                       
+            path.pop(0)       
+            #print "goal", path            
+            return path      
+        if currentState[0] not in closedList:
+            #print "current", currentState[0]   
+            closedList.append(currentState[0])  
+            path = [element for element in currentState[3]]
+            path.append(currentState[1])                     
+           # print "lijst", closedList
+            for nextState in problem.getSuccessors(currentState[0]):     
+                # print "currentstae 2", currentState[3]
+                # path = currentState[3]
+                nextState = (nextState[0], nextState[1], nextState[2], path)                
+                openList.push(nextState) 
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
