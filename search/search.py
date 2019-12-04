@@ -196,9 +196,39 @@ def breadthFirstSearch(problem):
                 openList.push(nextState) 
 
 def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    openList = util.PriorityQueue()
+    path = []
+    closedList = []
+    if problem.isGoalState(problem.getStartState()):
+        return path
+
+    
+    startState = ((problem.getStartState()), 'start', 0, [])
+    openList.push(startState, startState[2])
+
+    while not openList.isEmpty():       
+        currentState = openList.pop()  
+     
+        if problem.isGoalState(currentState[0]):
+            path = [element for element in currentState[3]]
+            path.append(currentState[1])                       
+            path.pop(0)       #to remove  'start' which i added 
+            return path      
+        if currentState[0] not in closedList:
+            closedList = [element for element in closedList]
+            closedList.append(currentState[0])  
+            path = [element for element in currentState[3]]
+            path.append(currentState[1])                     
+            for nextState in problem.getSuccessors(currentState[0]):                    
+                nextState = (nextState[0], nextState[1], nextState[2], path)     
+                openList.update( nextState, currentState[2]+nextState[2]) 
+                print "current", currentState[0]
+                print "nextstate", nextState[0]
+                print "cost", currentState[2]+nextState[2]
+           # openList.push(currentState, currentState[2])
+           # openList.update(currentState, currentState[2])
+
+
 
 def nullHeuristic(state, problem=None):
     """
