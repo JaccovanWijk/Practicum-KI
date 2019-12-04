@@ -221,7 +221,7 @@ def uniformCostSearch(problem):
             path = [element for element in currentState[3]]
             path.append(currentState[1])                     
             for nextState in problem.getSuccessors(currentState[0]):                    
-                nextState = (nextState[0], nextState[1], nextState[2], path, currentState[2]+nextState[2])  
+                nextState = (nextState[0], nextState[1], nextState[2], path, currentState[4]+nextState[2])  
                 
                 openList.update( nextState, nextState[4]) 
                 # print "current", currentState[0]
