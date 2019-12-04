@@ -203,8 +203,9 @@ def uniformCostSearch(problem):
         return path
 
     
-    startState = ((problem.getStartState()), 'start', 0, [])
+    startState = ((problem.getStartState()), 'start', 0, [], 0)
     openList.push(startState, startState[2])
+    cost = 0
 
     while not openList.isEmpty():       
         currentState = openList.pop()  
@@ -215,16 +216,17 @@ def uniformCostSearch(problem):
             path.pop(0)       #to remove  'start' which i added 
             return path      
         if currentState[0] not in closedList:
-            closedList = [element for element in closedList]
+            #closedList = [element for element in closedList]
             closedList.append(currentState[0])  
             path = [element for element in currentState[3]]
             path.append(currentState[1])                     
             for nextState in problem.getSuccessors(currentState[0]):                    
-                nextState = (nextState[0], nextState[1], nextState[2], path)     
-                openList.update( nextState, currentState[2]+nextState[2]) 
-                print "current", currentState[0]
-                print "nextstate", nextState[0]
-                print "cost", currentState[2]+nextState[2]
+                nextState = (nextState[0], nextState[1], nextState[2], path, currentState[2]+nextState[2])  
+                
+                openList.update( nextState, nextState[4]) 
+                # print "current", currentState[0]
+                # print "nextstate", nextState[0]
+                # print "cost", currentState[2]+nextState[2]
            # openList.push(currentState, currentState[2])
            # openList.update(currentState, currentState[2])
 
