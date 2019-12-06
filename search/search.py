@@ -82,116 +82,65 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
     # """
-    # print "Start:", problem.getStartState()
-    # print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    # print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    
-    "*** YOUR CODE HERE ***"   
-
     path = []
     closedList = []
     if problem.isGoalState(problem.getStartState()):
         return path
 
+    #Create startstate and push it to the stack
     openList = util.Stack() 
     startState = ((problem.getStartState()), 'start', 1, [])
-    # print "startstate0", startState[0]
-    # print "startstate3", startState[3]
-
     openList.push(startState)
 
     while not openList.isEmpty():       
-        currentState = openList.pop()               
+        #Get currentstate from queue
+        currentState = openList.pop()
+
+        #Check for goalstate and return path      
         if problem.isGoalState(currentState[0]):
             path = [element for element in currentState[3]]
             path.append(currentState[1])                       
-            path.pop(0)       
-            #print "goal", path            
-            return path      
+            path.pop(0)                
+            return path
+        
+        #Find new states and add them to stack
         if currentState[0] not in closedList:
-            #print "current", currentState[0]   
             closedList.append(currentState[0])  
             path = [element for element in currentState[3]]
-            path.append(currentState[1])                     
-           # print "lijst", closedList
+            path.append(currentState[1])  
             for nextState in problem.getSuccessors(currentState[0]):     
-                # print "currentstae 2", currentState[3]
-                # path = currentState[3]
                 nextState = (nextState[0], nextState[1], nextState[2], path)                
                 openList.push(nextState) 
          
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-# =============================================================================
-#     #Make queue for states to visit
-#     openStates = util.Queue()
-#     #Make dict for visited states
-#     startState = problem.getStartState()
-#     closedStates = [startState]
-#     
-#     #Push first possible steps into queue
-#     nextStates = problem.getSuccessors(startState)
-#     for state, direction, cost in nextStates:
-#         openStates.push((state, [direction]))
-#         
-#     #Do breadth-first search untill you find the endstate
-#     while not openStates.isEmpty():
-#         #Get current state
-#         currentState, currentPath = openStates.pop()
-#         
-#         #Stop if current state is goal state
-#         if problem.isGoalState(currentState):
-#             return currentPath
-#         
-#         #Add new states to queue
-#         newStates = problem.getSuccessors(currentState)
-#         for newState, newDirection, value in newStates:
-#                           
-#             #Check if there is a valid successor
-#             if newState not in closedStates:
-#                 #Make a copy of the current path
-#                 newPath = []
-#                 for step in currentPath:
-#                     newPath.append(step)
-#                 
-#                 newPath.append(newDirection)
-#                 openStates.push((newState, newPath))
-#         
-#         #Close current state
-#         closedStates.append(currentState)
-#         
-#     return []
-# =============================================================================
-
     path = []
     closedList = []
     if problem.isGoalState(problem.getStartState()):
         return path
 
+    #Create startstate and push it to the queue
     openList = util.Queue() 
     startState = ((problem.getStartState()), 'start', 1, [])
-    # print "startstate0", startState[0]
-    # print "startstate3", startState[3]
-
     openList.push(startState)
 
     while not openList.isEmpty():       
-        currentState = openList.pop()               
+        #Get currentstate from queue
+        currentState = openList.pop()
+
+        #Check for goalstate and return path      
         if problem.isGoalState(currentState[0]):
             path = [element for element in currentState[3]]
             path.append(currentState[1])                       
-            path.pop(0)       
-            #print "goal", path            
-            return path      
+            path.pop(0)                
+            return path
+        
+        #Find new states and add them to queue
         if currentState[0] not in closedList:
-            #print "current", currentState[0]   
             closedList.append(currentState[0])  
             path = [element for element in currentState[3]]
-            path.append(currentState[1])                     
-           # print "lijst", closedList
+            path.append(currentState[1])  
             for nextState in problem.getSuccessors(currentState[0]):     
-                # print "currentstae 2", currentState[3]
-                # path = currentState[3]
                 nextState = (nextState[0], nextState[1], nextState[2], path)                
                 openList.push(nextState) 
 
@@ -202,33 +151,29 @@ def uniformCostSearch(problem):
     if problem.isGoalState(problem.getStartState()):
         return path
 
-    
+    #Create startstate and put it into openlist
     startState = ((problem.getStartState()), 'start', 0, [], 0)
     openList.push(startState, startState[2])
-    cost = 0
 
-    while not openList.isEmpty():       
-        currentState = openList.pop()  
+    while not openList.isEmpty():    
+        #Get state from priorityqueue
+        currentState, currentNode, costForCurrentStep, currentPath, totalCurrentCost = openList.pop()  
      
-        if problem.isGoalState(currentState[0]):
-            path = [element for element in currentState[3]]
-            path.append(currentState[1])                       
+        #Check for goalstate and return path
+        if problem.isGoalState(currentState):
+            path = [element for element in currentPath]
+            path.append(currentNode)                       
             path.pop(0)       #to remove  'start' which i added 
             return path      
-        if currentState[0] not in closedList:
-            #closedList = [element for element in closedList]
-            closedList.append(currentState[0])  
-            path = [element for element in currentState[3]]
-            path.append(currentState[1])                     
-            for nextState in problem.getSuccessors(currentState[0]):                    
-                nextState = (nextState[0], nextState[1], nextState[2], path, currentState[4]+nextState[2])  
-                
-                openList.update( nextState, nextState[4]) 
-                # print "current", currentState[0]
-                # print "nextstate", nextState[0]
-                # print "cost", currentState[2]+nextState[2]
-           # openList.push(currentState, currentState[2])
-           # openList.update(currentState, currentState[2])
+        
+        #Find new states and add them to priorityqueue using the uniform cost function     
+        if currentState not in closedList:
+            closedList.append(currentState)  
+            path = [element for element in currentPath]
+            path.append(currentNode)                     
+            for nextState in problem.getSuccessors(currentState):                    
+                nextState = (nextState[0], nextState[1], nextState[2], path, totalCurrentCost + nextState[2])  
+                openList.update(nextState, nextState[4]) 
 
 
 
@@ -242,8 +187,35 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    openList = util.PriorityQueue()
+    path = []
+    closedList = []
+    if problem.isGoalState(problem.getStartState()):
+        return path
+
+    #Create startstate and put it into openlist
+    startState = ((problem.getStartState()), 'start', 0, [], 0)
+    openList.push(startState, startState[2])
+
+    while not openList.isEmpty():    
+        #Get state from priorityqueue
+        currentState, currentNode, costForCurrentStep, currentPath, totalCurrentCost = openList.pop()  
+     
+        #Check for goalstate and return path
+        if problem.isGoalState(currentState):
+            path = [element for element in currentPath]
+            path.append(currentNode)                       
+            path.pop(0)       #to remove  'start' which i added 
+            return path      
+        
+        #Find new states and add them to priorityqueue using the heuristic
+        if currentState not in closedList:
+            closedList.append(currentState)  
+            path = [element for element in currentPath]
+            path.append(currentNode)                     
+            for nextState in problem.getSuccessors(currentState):                    
+                nextState = (nextState[0], nextState[1], nextState[2], path, totalCurrentCost+nextState[2])  
+                openList.update(nextState, totalCurrentCost + nextState[2] + heuristic(nextState[0], problem))
 
 
 # Abbreviations
