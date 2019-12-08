@@ -44,15 +44,16 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.values = util.Counter() # A Counter is a dict with default 0
 
         # Write value iteration code here
-        for i in range(iterations):
+        for i in range(0, self.iterations):
             storevalues = self.values
             for s in mdp.getStates():
                 snewvalue = None
                 for a in mdp.getPossibleActions(s):
+                    temp = 0
                     for NextState, prob in mdp.getTransitionStatesAndProbs(s,a):
                         #if (self.values[NextState] == 0): continue
-                        temp = prob * (mdp.getReward(s,a,NextState) + discount * self.values[NextState])
-                        snewvalue = max((snewvalue,temp))
+                        temp += prob * (mdp.getReward(s,a,NextState) + discount * self.values[NextState])
+                    snewvalue = max((snewvalue,temp))
                 if snewvalue is not None:
                     storevalues[s] = snewvalue
             self.values = storevalues

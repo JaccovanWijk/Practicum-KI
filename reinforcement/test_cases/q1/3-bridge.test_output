@@ -80,11 +80,11 @@ Values at iteration 1 are NOT correct.
    Student solution:
  values_k_1: """
         __________      10.0000   __________
-         -100.0000       0.2620    -100.0000
-         -100.0000       0.3425    -100.0000
-         -100.0000       0.4477    -100.0000
-         -100.0000       0.5852    -100.0000
-         -100.0000       0.7650    -100.0000
+         -100.0000       0.0000    -100.0000
+         -100.0000       0.0000    -100.0000
+         -100.0000       0.0001    -100.0000
+         -100.0000       0.0018    -100.0000
+         -100.0000       0.0425    -100.0000
         __________       1.0000   __________
 """
 
@@ -101,52 +101,28 @@ Values at iteration 1 are NOT correct.
 """
 
 
-Q-Values at iteration 1 for action north are NOT correct.
-   Student solution:
- q_values_k_1_action_north: """
-        __________      illegal   __________
-           illegal      -0.8500      illegal
-           illegal      -8.2996      illegal
-           illegal      -8.2380      illegal
-           illegal      -8.1575      illegal
-           illegal      -8.0523      illegal
-        __________      illegal   __________
-"""
-
-
-   Correct solution:
+Q-Values at iteration 1 for action north are correct.
+   Student/correct solution:
  q_values_k_1_action_north: """
         __________      illegal   __________
            illegal      -0.8500      illegal
            illegal      -8.5000      illegal
            illegal      -8.5000      illegal
-           illegal      -8.5000      illegal
-           illegal      -8.5000      illegal
+           illegal      -8.4999      illegal
+           illegal      -8.4986      illegal
         __________      illegal   __________
 """
 
 
-Q-Values at iteration 1 for action east are NOT correct.
-   Student solution:
- q_values_k_1_action_east: """
-        __________      illegal   __________
-           illegal     -76.0604      illegal
-           illegal     -76.4698      illegal
-           illegal     -76.4606      illegal
-           illegal     -76.4485      illegal
-           illegal     -76.4326      illegal
-        __________      illegal   __________
-"""
-
-
-   Correct solution:
+Q-Values at iteration 1 for action east are correct.
+   Student/correct solution:
  q_values_k_1_action_east: """
         __________      illegal   __________
            illegal     -76.0750      illegal
            illegal     -76.5000      illegal
-           illegal     -76.5000      illegal
-           illegal     -76.5000      illegal
-           illegal     -76.4575      illegal
+           illegal     -76.4999      illegal
+           illegal     -76.4982      illegal
+           illegal     -76.4574      illegal
         __________      illegal   __________
 """
 
@@ -168,10 +144,10 @@ Q-Values at iteration 1 for action south are NOT correct.
    Student solution:
  q_values_k_1_action_south: """
         __________      illegal   __________
-           illegal      -8.2380      illegal
-           illegal      -8.1575      illegal
-           illegal      -8.0523      illegal
-           illegal      -7.9148      illegal
+           illegal      -8.5000      illegal
+           illegal      -8.4999      illegal
+           illegal      -8.4986      illegal
+           illegal      -8.4675      illegal
            illegal      -7.7350      illegal
         __________      illegal   __________
 """
@@ -189,27 +165,15 @@ Q-Values at iteration 1 for action south are NOT correct.
 """
 
 
-Q-Values at iteration 1 for action west are NOT correct.
-   Student solution:
- q_values_k_1_action_west: """
-        __________      illegal   __________
-           illegal     -76.0604      illegal
-           illegal     -76.4698      illegal
-           illegal     -76.4606      illegal
-           illegal     -76.4485      illegal
-           illegal     -76.4326      illegal
-        __________      illegal   __________
-"""
-
-
-   Correct solution:
+Q-Values at iteration 1 for action west are correct.
+   Student/correct solution:
  q_values_k_1_action_west: """
         __________      illegal   __________
            illegal     -76.0750      illegal
            illegal     -76.5000      illegal
-           illegal     -76.5000      illegal
-           illegal     -76.5000      illegal
-           illegal     -76.4575      illegal
+           illegal     -76.4999      illegal
+           illegal     -76.4982      illegal
+           illegal     -76.4574      illegal
         __________      illegal   __________
 """
 
