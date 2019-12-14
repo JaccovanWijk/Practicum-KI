@@ -72,7 +72,6 @@ class QLearningAgent(ReinforcementAgent):
         for action in legalActions[1:]:
             if self.values[(state, action)] > maxValue:
                 maxValue = self.values[(state, action)]
-        print 'Max', maxValue
         return maxValue
                 
 
