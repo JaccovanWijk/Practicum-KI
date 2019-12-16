@@ -43,20 +43,18 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.iterations = iterations
         self.values = util.Counter() # A Counter is a dict with default 0
 
-        # Write value iteration code here
-        for i in range(self.iterations):
-            storevalues = util.Counter()
-            for s in mdp.getStates():
-                snewvalue = None
-                for a in mdp.getPossibleActions(s):
+        for i in range(self.iterations):    #First create a for-loop for the amount of iterations
+            storevalues = util.Counter()    #Because self.values is a util.Counter() we create a temporary one
+            for s in mdp.getStates():       #to store the new values in. This way we update all values simultaniously
+                snewvalue = None            #After that we create a for loop for all the states in the iteration
+                for a in mdp.getPossibleActions(s):     #Then we create a for loop for every action for one state
                     temp = 0
-                    for NextState, prob in mdp.getTransitionStatesAndProbs(s,a):
-                        #if (self.values[NextState] == 0): continue
-                        temp += prob * (mdp.getReward(s,a,NextState) + discount * self.values[NextState])
-                    snewvalue = max((snewvalue, temp))
+                    for NextState, prob in mdp.getTransitionStatesAndProbs(s,a):    #We then loop over every transition for that action
+                        temp += prob * (mdp.getReward(s,a,NextState) + discount * self.values[NextState])   #And calculate the Value of that action
+                    snewvalue = max((snewvalue, temp))      #This max-funtion is to complete the Bellman function we have to integrate
                 if snewvalue is not None:
-                    storevalues[s] = snewvalue
-            self.values = storevalues
+                    storevalues[s] = snewvalue              #store the new values in the above created Util.Counter()
+            self.values = storevalues                       #replace the old values with the new values in one go
 
 
     def getValue(self, state):
@@ -74,7 +72,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         mdp = self.mdp
         qvalue = 0
         for NextState, prob in mdp.getTransitionStatesAndProbs(state,action):
-            qvalue += prob * (mdp.getReward(state,action,NextState) + self.discount * self.values[NextState])
+            qvalue += prob * (mdp.getReward(state,action,NextState) + self.discount * self.values[NextState]) #calcutaion of q value per nextState for an action
         return qvalue
 
     def computeActionFromValues(self, state):
@@ -89,15 +87,15 @@ class ValueIterationAgent(ValueEstimationAgent):
         mdp = self.mdp
         highestQ = None
         bestA = None
-        if mdp.isTerminal(state):
+        if mdp.isTerminal(state):       #return none if a terminal state
             return None
         else:
-            for a in mdp.getPossibleActions(state):
-                aQvalue = self.computeQValueFromValues(state,a)
-                if (max((highestQ, aQvalue)) == aQvalue):
+            for a in mdp.getPossibleActions(state):                 #loop over actions in a state
+                aQvalue = self.computeQValueFromValues(state,a)     #Compute qvalue for an action
+                if (max((highestQ, aQvalue)) == aQvalue):           #If the q value is higher then the last one switch action
                     highestQ = aQvalue
                     bestA = a
-            return bestA
+            return bestA                                            #return the best action
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)
