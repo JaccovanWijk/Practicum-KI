@@ -61,7 +61,50 @@ class MiraClassifier:
         representing a vector of values.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        #util.raiseNotDefined()
+        #  self.features = trainingData[0].keys() # could be useful later
+        # DO NOT ZERO OUT YOUR WEIGHTS BEFORE STARTING TRAINING, OR
+        # THE AUTOGRADER WILL LIKELY DEDUCT POINTS.
+        
+         #training for every c 
+        for c in range(len(Cgrid)):
+            for iteration in range(self.max_iterations):
+                print "Starting iteration ", iteration, "..."
+           
+                for i in range(len(trainingData)):
+                    #Set current f
+                    f = trainingData[i]
+                    #Set current real y
+                    y = trainingLabels[i]
+                    
+                    #Find y' (maxY)
+                    score = util.Counter()
+                    for l in self.legalLabels:
+                        score[l] = self.weights[l] * f
+                    maxY = score.argMax()
+                    
+                    #Update weights
+                    if maxY != y:
+                        #calculate stepsize
+                        #v2 = map functie, functie toepassen op elk element lijst, daarvan sum
+                        #print "f", f.keys()
+                        #print "w", self.weights[y]
+                        fv = 0 
+                        for key in f:
+                            fv += sum(map(lambda x: pow(x,2),key))
+                        print "fv", fv
+                       # fv = sum(map(lambda x: pow(x,2),f.keys()))
+                        stepsize = min(c, ((self.weights[maxY]-self.weights[y])*f+1)/(2*fv))
+                        print "stepsize", stepsize
+                        self.weights[y] += stepsize*f
+                        self.weights[maxY] -= stepsize*f
+
+        # store accuracy, check which C best, in case of tie choose lowest C value
+        #Store the weights learned using the best value of C at the end in self.weights,
+        #  so that these weights can be used to test your classifier.
+
+
+        
 
     def classify(self, data ):
         """
