@@ -65,11 +65,15 @@ class MiraClassifier:
         #  self.features = trainingData[0].keys() # could be useful later
         # DO NOT ZERO OUT YOUR WEIGHTS BEFORE STARTING TRAINING, OR
         # THE AUTOGRADER WILL LIKELY DEDUCT POINTS.
-        
+        allweights = {}
+
          #training for every c 
         for c in range(len(Cgrid)):
+             #initialize weights keys c: weights 
+            allweights[c] = trainingData
+
             for iteration in range(self.max_iterations):
-                print "Starting iteration ", iteration, "..."
+               # print "Starting iteration ", iteration, "..."
            
                 for i in range(len(trainingData)):
                     #Set current f
@@ -86,22 +90,38 @@ class MiraClassifier:
                     #Update weights
                     if maxY != y:
                         #calculate stepsize
-                        #v2 = map functie, functie toepassen op elk element lijst, daarvan sum
-                        #print "f", f.keys()
-                        #print "w", self.weights[y]
+                        #v2 = map functie, functie toepassen op elk element lijst, daarvan sum                        
                         fv = 0 
                         for key in f:
-                            fv += sum(map(lambda x: pow(x,2),key))
-                        print "fv", fv
-                       # fv = sum(map(lambda x: pow(x,2),f.keys()))
-                        stepsize = min(c, ((self.weights[maxY]-self.weights[y])*f+1)/(2*fv))
-                        print "stepsize", stepsize
-                        self.weights[y] += stepsize*f
-                        self.weights[maxY] -= stepsize*f
+                            fv += pow(key[1],2)
+                            #fv += sum(map(lambda x: pow(x,2),key))
+                        #print "fv", fv
+                        stepsize = min(c, ((self.weights[maxY]-self.weights[y])*f+1.0)/(2.0*fv))
+                        #print "stepsize", stepsize
+                        for key in self.weights[y]:
+                            self.weights[y][key] = f[key] *stepsize
+                        for key in self.weights[maxY]:
+                            self.weights[maxY][key] = f[key] *stepsize                
+             
+
+
+                        #self.weights[y] += stepsize*f
+                        #self.weights[maxY] -= stepsize*f
+           
+        
+        for key in allweights:
+            gues = self.classify(allweights[key])
+            
+            print "g", gues
+
 
         # store accuracy, check which C best, in case of tie choose lowest C value
-        #Store the weights learned using the best value of C at the end in self.weights,
+        # Store the weights learned using the best value of C at the end in self.weights,
         #  so that these weights can be used to test your classifier.
+        # compare training label and guesses 
+
+        
+
 
 
         
