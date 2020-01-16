@@ -69,8 +69,7 @@ class MiraClassifier:
 
          #training for every c 
         for c in range(len(Cgrid)):
-             #initialize weights keys c: weights 
-            allweights[c] = trainingData
+          
 
             for iteration in range(self.max_iterations):
                # print "Starting iteration ", iteration, "..."
@@ -92,33 +91,47 @@ class MiraClassifier:
                         #calculate stepsize
                         #v2 = map functie, functie toepassen op elk element lijst, daarvan sum                        
                         fv = 0 
-                        for key in f:
-                            fv += pow(key[1],2)
+                        #print "fval", f.values()
+                        fv += sum(map(lambda x: pow(x,2), f.values()))
+                        #for value in f:
+                         #   print "fefwefw", value
+                            #fv += pow(key[1],2)
                             #fv += sum(map(lambda x: pow(x,2),key))
-                        #print "fv", fv
+                        print "fv", fv
                         stepsize = min(c, ((self.weights[maxY]-self.weights[y])*f+1.0)/(2.0*fv))
-                        #print "stepsize", stepsize
+                        print "stepsize", stepsize
                         for key in self.weights[y]:
                             self.weights[y][key] = f[key] *stepsize
                         for key in self.weights[maxY]:
-                            self.weights[maxY][key] = f[key] *stepsize                
+                            self.weights[maxY][key] = f[key] *stepsize     
+                
+            #calculcate accuracy
+            guesslabels = self.classify(validationData)
+
+            print "guesslabels", guesslabels
+            print "vallabels", validationLabels       
              
+               
 
 
-                        #self.weights[y] += stepsize*f
-                        #self.weights[maxY] -= stepsize*f
+            #initialize weights keys c: weights 
+            allweights[c] = self.weights 
+
            
         
-        for key in allweights:
-            gues = self.classify(allweights[key])
-            
-            print "g", gues
-
-
         # store accuracy, check which C best, in case of tie choose lowest C value
         # Store the weights learned using the best value of C at the end in self.weights,
         #  so that these weights can be used to test your classifier.
         # compare training label and guesses 
+        for key in allweights:
+            guess = self.classify(allweights[key])
+           # accuracy = 
+            self.weights += allweights[key]
+        
+
+            print "g", guess
+
+
 
         
 
