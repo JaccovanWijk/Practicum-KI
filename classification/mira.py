@@ -68,7 +68,7 @@ class MiraClassifier:
         allweights = {}
 
          #training for every c 
-        for c in range(len(Cgrid)):
+        for c in Cgrid:
           
 
             for iteration in range(self.max_iterations):
@@ -88,52 +88,38 @@ class MiraClassifier:
                     
                     #Update weights
                     if maxY != y:
-                        #calculate stepsize
-                        #v2 = map functie, functie toepassen op elk element lijst, daarvan sum                        
-                        fv = 0 
-                        #print "fval", f.values()
-                        fv += sum(map(lambda x: pow(x,2), f.values()))
-                        #for value in f:
-                         #   print "fefwefw", value
-                            #fv += pow(key[1],2)
-                            #fv += sum(map(lambda x: pow(x,2),key))
-                        print "fv", fv
+                        #calculate stepsize                        
+                        fv = sum(map(lambda x: pow(x,2), f.values()))
+                       
+                      #  print "fv", fv
                         stepsize = min(c, ((self.weights[maxY]-self.weights[y])*f+1.0)/(2.0*fv))
-                        print "stepsize", stepsize
-                        for key in self.weights[y]:
-                            self.weights[y][key] = f[key] *stepsize
-                        for key in self.weights[maxY]:
-                            self.weights[maxY][key] = f[key] *stepsize     
+                        #print "stepsize", stepsize
+                        
+                        for key in self.features:
+                            self.weights[y][key] = self.weights[y][key] + f[key] *stepsize                         
+                            self.weights[maxY][key] = self.weights[maxY][key] - f[key] *stepsize     
                 
             #calculcate accuracy
-            guesslabels = self.classify(validationData)
+            guesslabels = self.classify(validationData)          
+            accurate = [guesslabels[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
+            #Store weights c and accuracy
+            allweights[c,accurate] = self.weights 
 
-            print "guesslabels", guesslabels
-            print "vallabels", validationLabels       
-             
-               
-
-
-            #initialize weights keys c: weights 
-            allweights[c] = self.weights 
-
-           
-        
-        # store accuracy, check which C best, in case of tie choose lowest C value
-        # Store the weights learned using the best value of C at the end in self.weights,
-        #  so that these weights can be used to test your classifier.
-        # compare training label and guesses 
+        #Check which C is the best, in case of tie choose C with the lowest value 
+        maxAccurate = 0
+        minC = 100000000
         for key in allweights:
-            guess = self.classify(allweights[key])
-           # accuracy = 
-            self.weights += allweights[key]
-        
+            print "key", key
+            if key[1] == maxAccurate:
+                if key[0] < minC:
+                    self.weights = allweights[key].values()
+                    minC = key[0]
 
-            print "g", guess
-
-
-
-        
+            if key[1] > maxAccurate:
+                maxAccurate = key[1]
+                minC = key[0]
+                self.weights = allweights[key].values()                      
+             
 
 
 
