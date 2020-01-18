@@ -89,11 +89,9 @@ class MiraClassifier:
                     #Update weights
                     if maxY != y:
                         #calculate stepsize                        
-                        fv = sum(map(lambda x: pow(x,2), f.values()))
-                       
-                      #  print "fv", fv
+                        fv = sum(map(lambda x: pow(x,2), f.values()))                       
                         stepsize = min(c, ((self.weights[maxY]-self.weights[y])*f+1.0)/(2.0*fv))
-                        #print "stepsize", stepsize
+                        
                         
                         for key in self.features:
                             self.weights[y][key] = self.weights[y][key] + f[key] *stepsize                         
