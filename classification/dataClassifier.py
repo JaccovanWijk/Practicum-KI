@@ -145,26 +145,30 @@ def ProcessWhiteArea(datum, Processed, x, y):
     Processed[x][y] = 'yes'
     ToProcess = []
 
-    if (x != DIGIT_DATUM_WIDTH - 1):
-        ToProcess.append((x + 1, y))
-        if (y != 0):
-            ToProcess.append((x + 1, y - 1))
-        if (y != DIGIT_DATUM_HEIGHT - 1):
-            ToProcess.append((x + 1, y + 1))
-    if (x != 0):
-        ToProcess.append((x - 1,y))
-        if (y != 0):
-            ToProcess.append((x - 1, y - 1))
-        if (y != DIGIT_DATUM_HEIGHT - 1):
-            ToProcess.append((x - 1, y + 1))
-    if (y != 0):
-        ToProcess.append((x, y -1))
-    if (y != DIGIT_DATUM_HEIGHT - 1):
-        ToProcess.append((x, y + 1))
-
-        for (a,b) in ToProcess:
-            if(Processed[a][b] == 'no' and datum.getPixel(a,b) == 0):
-                Processed = ProcessWhiteArea(datum, Processed, a, b)
+    if (x + 1 != DIGIT_DATUM_WIDTH):
+        if (Processed[x+1][y] == 'no' and datum.getPixel(x+1,y) == 0):
+            Processed = ProcessWhiteArea(datum, Processed, x+1, y)
+        if (y-1 >= 0):
+            if (Processed[x+1][y-1] == 'no' and datum.getPixel(x+1,y-1) == 0):
+                Processed = ProcessWhiteArea(datum, Processed, x+1, y-1)
+        if (y + 1 != DIGIT_DATUM_HEIGHT):
+            if (Processed[x+1][y+1] == 'no' and datum.getPixel(x+1,y+1) == 0):
+                Processed = ProcessWhiteArea(datum, Processed, x+1, y+1)
+    if (x - 1 >= 0):
+        if (Processed[x-1][y] == 'no' and datum.getPixel(x-1,y) == 0):
+            Processed = ProcessWhiteArea(datum, Processed, x-1, y)
+        if (y - 1 >= 0):
+            if (Processed[x-1][y-1] == 'no' and datum.getPixel(x-1,y-1) == 0):
+                Processed = ProcessWhiteArea(datum, Processed, x-1, y-1)
+        if (y + 1 != DIGIT_DATUM_HEIGHT):
+            if (Processed[x-1][y+1] == 'no' and datum.getPixel(x-1,y+1) == 0):
+                Processed = ProcessWhiteArea(datum, Processed, x-1, y+1)
+    if (y - 1 >= 0):
+        if (Processed[x][y-1] == 'no' and datum.getPixel(x,y-1) == 0):
+            Processed = ProcessWhiteArea(datum, Processed, x, y-1)
+    if (y + 1 != DIGIT_DATUM_HEIGHT):
+        if (Processed[x][y+1] == 'no' and datum.getPixel(x,y+1) == 0):
+            Processed = ProcessWhiteArea(datum, Processed, x, y+1)
 
     return Processed
 
@@ -209,7 +213,6 @@ def enhancedPacmanFeatures(state, action):
     """
     features = util.Counter()
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
     return features
 
 
