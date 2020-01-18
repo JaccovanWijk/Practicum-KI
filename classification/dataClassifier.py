@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -78,10 +78,95 @@ def enhancedFeatureExtractorDigit(datum):
     features =  basicFeatureExtractorDigit(datum)
 
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    MiddleWidth = DIGIT_DATUM_WIDTH/2
+    MiddleHeight = DIGIT_DATUM_HEIGHT/2
+    PixelsTop = 0
+    PixelsBot = 0
+    PixelsLeft = 0
+    PixelsRight = 0
+    WhiteSpaces = 0
+    Processed = [['no' for i in range(DIGIT_DATUM_WIDTH)] for j in range(DIGIT_DATUM_HEIGHT)]
 
+    for x in range(DIGIT_DATUM_WIDTH):
+        for y in range(MiddleHeight):
+            if datum.getPixel(x,y) > 0:
+                PixelsBot += 1
+        for z in range(MiddleHeight, DIGIT_DATUM_HEIGHT):
+            if datum.getPixel(x,z) > 0:
+                PixelsTop +=1
+    for y in range(DIGIT_DATUM_HEIGHT):
+        for x in range(MiddleWidth):
+            if datum.getPixel(x,y) > 0:
+                PixelsLeft += 1
+        for z in range(MiddleWidth, DIGIT_DATUM_WIDTH):
+            if datum.getPixel(z,y) > 0:
+                PixelsRight +=1
+
+    for x in range(DIGIT_DATUM_WIDTH):
+        for y in range(DIGIT_DATUM_HEIGHT):
+            if(Processed == 'no' and datum.getPixel(x,y) == 0):
+                Processed == ProcessWhiteArea(datum, Processed, x, y)
+                WhiteSpaces += 1
+
+    features["Bot"] = 0
+    features["Same"] = 0
+    features["Top"] = 0
+    features["Left"] = 0
+    features["Rigth"] = 0
+    features["Middle"] = 0
+    features["White1"] = 0
+    features["White2"] = 0
+    features["White3"] = 0
+
+    if WhiteSpaces == 1:
+        features["White1"] = 1
+    elif WhiteSpaces == 2:
+        features["White2"] = 1
+    elif WhiteSpaces == 3:
+        features["White3"] = 1
+
+    if abs(PixelsLeft - PixelsRight) < 20:
+        features["Middle"] = 1
+    elif (PixelsLeft > PixelsRight):
+        features["Left"] = 1
+    else:
+        features["Right"] = 1
+
+    if abs(PixelsBot - PixelsTop) < 20:
+        features["Same"] = 1
+    elif (PixelsBot > PixelsTop):
+        features["Bot"] = 1
+    else:
+        features["Top"] = 1
     return features
 
+def ProcessWhiteArea(datum, Processed, x, y):
+
+    Processed[x][y] = 'yes'
+    ToProcess = []
+
+    if (x != DIGIT_DATUM_WIDTH - 1):
+        ToProcess.append(x + 1, y)
+        if (y != 0):
+            ToProcess.append(x + 1, y - 1)
+        if (y != DIGIT_DATUM_HEIGHT - 1):
+            ToProcess.append(x + 1, y + 1)
+    if (x != 0):
+        ToProcess.append(x - 1,y)
+        if (y != 0):
+            ToProcess.append(x - 1, y - 1)
+        if (y != DIGIT_DATUM_HEIGHT - 1):
+            ToProcess.append(x - 1, y + 1)
+    if (y != 0):
+        ToProcess.append(x, y -1)
+    if (y != DIGIT_DATUM_HEIGHT - 1):
+        ToProcess.append(x, y + 1)
+
+    for (a,b) in ToProcess:
+        if(Processed == 'no' and datum.getPixel(x,y) == 0):
+            Processed == ProcessWhiteArea(datum, Processed, x, y)
+
+    return Processed
 
 
 def basicFeatureExtractorPacman(state):
@@ -364,7 +449,7 @@ def runClassifier(args, options):
     featureFunction = args['featureFunction']
     classifier = args['classifier']
     printImage = args['printImage']
-    
+
     # Load data
     numTraining = options.training
     numTest = options.test
