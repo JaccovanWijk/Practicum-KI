@@ -104,8 +104,8 @@ def enhancedFeatureExtractorDigit(datum):
 
     for x in range(DIGIT_DATUM_WIDTH):
         for y in range(DIGIT_DATUM_HEIGHT):
-            if(Processed == 'no' and datum.getPixel(x,y) == 0):
-                Processed == ProcessWhiteArea(datum, Processed, x, y)
+            if(Processed[x][y] == 'no' and datum.getPixel(x,y) == 0):
+                Processed = ProcessWhiteArea(datum, Processed, x, y)
                 WhiteSpaces += 1
 
     features["Bot"] = 0
@@ -120,19 +120,19 @@ def enhancedFeatureExtractorDigit(datum):
 
     if WhiteSpaces == 1:
         features["White1"] = 1
-    elif WhiteSpaces == 2:
+    if WhiteSpaces == 2:
         features["White2"] = 1
-    elif WhiteSpaces == 3:
+    if WhiteSpaces == 3:
         features["White3"] = 1
 
-    if abs(PixelsLeft - PixelsRight) < 20:
+    if abs(PixelsLeft - PixelsRight) < 80:
         features["Middle"] = 1
     elif (PixelsLeft > PixelsRight):
         features["Left"] = 1
     else:
         features["Right"] = 1
 
-    if abs(PixelsBot - PixelsTop) < 20:
+    if abs(PixelsBot - PixelsTop) < 50:
         features["Same"] = 1
     elif (PixelsBot > PixelsTop):
         features["Bot"] = 1
@@ -146,25 +146,25 @@ def ProcessWhiteArea(datum, Processed, x, y):
     ToProcess = []
 
     if (x != DIGIT_DATUM_WIDTH - 1):
-        ToProcess.append(x + 1, y)
+        ToProcess.append((x + 1, y))
         if (y != 0):
-            ToProcess.append(x + 1, y - 1)
+            ToProcess.append((x + 1, y - 1))
         if (y != DIGIT_DATUM_HEIGHT - 1):
-            ToProcess.append(x + 1, y + 1)
+            ToProcess.append((x + 1, y + 1))
     if (x != 0):
-        ToProcess.append(x - 1,y)
+        ToProcess.append((x - 1,y))
         if (y != 0):
-            ToProcess.append(x - 1, y - 1)
+            ToProcess.append((x - 1, y - 1))
         if (y != DIGIT_DATUM_HEIGHT - 1):
-            ToProcess.append(x - 1, y + 1)
+            ToProcess.append((x - 1, y + 1))
     if (y != 0):
-        ToProcess.append(x, y -1)
+        ToProcess.append((x, y -1))
     if (y != DIGIT_DATUM_HEIGHT - 1):
-        ToProcess.append(x, y + 1)
+        ToProcess.append((x, y + 1))
 
-    for (a,b) in ToProcess:
-        if(Processed == 'no' and datum.getPixel(x,y) == 0):
-            Processed == ProcessWhiteArea(datum, Processed, x, y)
+        for (a,b) in ToProcess:
+            if(Processed[a][b] == 'no' and datum.getPixel(a,b) == 0):
+                Processed = ProcessWhiteArea(datum, Processed, a, b)
 
     return Processed
 
