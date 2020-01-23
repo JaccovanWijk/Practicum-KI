@@ -231,7 +231,7 @@ def enhancedPacmanFeatures(state, action):
         features['win'] = 1
 
     if state.getScore() < successor.getScore():
-        features['score'] = 1
+        features['score' + str(successor.getScore() - state.getScore())] = 1
 
     for ghostpos in ghostspos:
         if util.manhattanDistance(pacposition, ghostpos) < 4:
@@ -254,14 +254,15 @@ def enhancedPacmanFeatures(state, action):
         if util.manhattanDistance(pacposition, cap) < 4:
             features['capsule4'] = 1
 
+    fooddist = float('inf')
     for food in nextfood:
-        if pacposition == food:
-            features['food'] == 1
+        fooddist = min(util.manhattanDistance(food, pacposition), fooddist)
         if util.manhattanDistance(pacposition, food) < 4:
             features['foodclose'] = 1
         else:
             features['foodfar'] = 1
 
+    features['fooddist'] = fooddist
     return features
 
 
