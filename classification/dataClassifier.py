@@ -233,7 +233,9 @@ def enhancedPacmanFeatures(state, action):
     if state.getScore() < successor.getScore():
         features['score' + str(successor.getScore() - state.getScore())] = 1
 
+    #closestghost = float('inf')
     for ghostpos in ghostspos:
+        #closestghost = min(closestghost, ghostpos)
         if util.manhattanDistance(pacposition, ghostpos) < 4:
             features['ghostclose'] = 1
         if ghostpos == pacposition:
@@ -243,8 +245,10 @@ def enhancedPacmanFeatures(state, action):
         if ghoststate.scaredTimer <= 0:
             features['scaredghosts'] = 0
 
-
+    #capsuldist = float('inf')
+    #if len(capsules) == 0: capsuldist = 0
     for cap in capsules:
+        #capsuldist = min(capsuldist, util.manhattanDistance(cap, pacposition))
         if cap == pacposition:
             features['capsule'] = 1
         if util.manhattanDistance(pacposition, cap) < 2:
@@ -262,6 +266,8 @@ def enhancedPacmanFeatures(state, action):
         else:
             features['foodfar'] = 1
 
+    #features['capsuldist' + str(capsuldist)] = 1
+    #features['closestghost' + str(closestghost)] = 1
     features['fooddist'] = fooddist
     return features
 
