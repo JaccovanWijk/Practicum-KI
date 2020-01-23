@@ -269,34 +269,24 @@ def enhancedPacmanFeatures(state, action):
             features['capsule3'] = 1
         if util.manhattanDistance(pacposition, cap) < 4:
             features['capsule4'] = 1
-    
-    
 
-<<<<<<< HEAD
-    fooddist = float('inf')
-    for food in nextfood:
-        if food == pacposition:
-            features['food'] = 1
-        if util.manhattanDistance(pacposition, food) < 2:
-            features['food2'] = 1
-        if util.manhattanDistance(pacposition, food) < 3:
-            features['food3'] = 1
-        if util.manhattanDistance(pacposition, food) < 4:
-            features['food4'] = 1
-        fooddist = min(util.manhattanDistance(food, pacposition), fooddist)
+
+
+    #fooddist = float('inf')
+    #for food in nextfood:
+        #if food == pacposition:
+            #features['food'] = 1
+        #if util.manhattanDistance(pacposition, food) < 2:
+            #features['food2'] = 1
+        #if util.manhattanDistance(pacposition, food) < 3:
+            #features['food3'] = 1
+        #if util.manhattanDistance(pacposition, food) < 4:
+            #features['food4'] = 1
+        #fooddist = min(util.manhattanDistance(food, pacposition), fooddist)
         #if util.manhattanDistance(pacposition, food) < 4:
             #features['foodclose'] = 1
         #else:
             #features['foodfar'] = 1
-=======
-    # fooddist = float('inf')
-    # for food in nextfood:
-    #     fooddist = min(util.manhattanDistance(food, pacposition), fooddist)
-    #     if util.manhattanDistance(pacposition, food) < 4:
-    #         features['foodclose'] = 1
-    #     else:
-    #         features['foodfar'] = 1
->>>>>>> 72f4e872e87eed8140617708e015cfc9870c53d7
 
     #features['capsuldist' + str(capsuldist)] = 1
     #features['fooddist'] = fooddist
