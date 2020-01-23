@@ -220,6 +220,7 @@ def enhancedPacmanFeatures(state, action):
     ghostspos = successor.getGhostPositions()
     nextfood = successor.getFood()
     ghoststates = successor.getGhostStates()
+    currentfood = state.getFood()
     features['scaredghosts'] = 1
 
     if successor.isLose():
@@ -227,6 +228,16 @@ def enhancedPacmanFeatures(state, action):
 
     if state.getScore() < successor.getScore():
         features['score' + str(successor.getScore() - state.getScore())] = 1
+
+    mindisttofood = float('inf')
+
+    for x in range(len(currentfood[:])):
+        for y in range(len(currentfood[0])):
+            if currentfood[x][y]:
+                distance = util.manhattanDistance(pacposition, (x, y))
+                if distance < mindisttofood:
+                    mindisttofood = distance
+    features['mindisttofood'] = mindisttofood
 
     for ghostpos in ghostspos:
         if ghostpos == pacposition:
@@ -258,7 +269,10 @@ def enhancedPacmanFeatures(state, action):
             features['capsule3'] = 1
         if util.manhattanDistance(pacposition, cap) < 4:
             features['capsule4'] = 1
+    
+    
 
+<<<<<<< HEAD
     fooddist = float('inf')
     for food in nextfood:
         if food == pacposition:
@@ -274,9 +288,18 @@ def enhancedPacmanFeatures(state, action):
             #features['foodclose'] = 1
         #else:
             #features['foodfar'] = 1
+=======
+    # fooddist = float('inf')
+    # for food in nextfood:
+    #     fooddist = min(util.manhattanDistance(food, pacposition), fooddist)
+    #     if util.manhattanDistance(pacposition, food) < 4:
+    #         features['foodclose'] = 1
+    #     else:
+    #         features['foodfar'] = 1
+>>>>>>> 72f4e872e87eed8140617708e015cfc9870c53d7
 
     #features['capsuldist' + str(capsuldist)] = 1
-    features['fooddist'] = fooddist
+    #features['fooddist'] = fooddist
     return features
 
 
