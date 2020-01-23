@@ -107,19 +107,20 @@ class MiraClassifier:
         maxAccurate = 0
         minC = 100000000
         for key in allweights:
-            #print "key", key
+            print "key", key
             if key[1] == maxAccurate:
                 if key[0] < minC:
                     self.weights = allweights[key].values()
                     minC = key[0]
+                    print "lowestk", key
 
             if key[1] > maxAccurate:
                 maxAccurate = key[1]
                 minC = key[0]
-                self.weights = allweights[key].values()                      
-             
+                self.weights = allweights[key].values()      
+                print "maxkey", key                
 
-
+        
 
         
 
@@ -138,4 +139,15 @@ class MiraClassifier:
             guesses.append(vectors.argMax())
         return guesses
 
+    #for question 6c, in dataclassifier line 509, mira should be added to the option for findHighWeightFeatures 
+    #(currently this option is only possible for the perceptron)
+    def findHighWeightFeatures(self, label):
+        """
+        Returns a list of the 100 features with the greatest weight for some label
+        """
+        
+        weights = self.weights[label]
+        featuresWeights = weights.sortedKeys()[:100] 
+
+        return featuresWeights
 
