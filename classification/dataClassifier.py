@@ -221,13 +221,8 @@ def enhancedPacmanFeatures(state, action):
     nextfood = successor.getFood()
     ghoststates = successor.getGhostStates()
     features['scaredghosts'] = 1
-    features['lose'] = 0
-    features['win'] = 0
-    features['score'] = 0
-    features['ghostclose'] = 0
-    features['ghost'] = 0
-    features['capsule'] = 0
-    features['foodclose'] = 0
+
+    features['agentnum'] = successor.getNumAgents()
 
     if successor.isLose():
         features['lose'] = 1
@@ -248,13 +243,24 @@ def enhancedPacmanFeatures(state, action):
         if ghoststate.scaredTimer <= 0:
             features['scaredghosts'] = 0
 
+
     for cap in capsules:
+        if cap == pacposition:
+            features['capsule'] = 1
+        if util.manhattanDistance(pacposition, cap) < 2:
+            features['capsule2'] = 1
+        if util.manhattanDistance(pacposition, cap) < 3:
+            features['capsule3'] = 1
         if util.manhattanDistance(pacposition, cap) < 4:
-            features['capsuleclose'] = 1
+            features['capsule4'] = 1
 
     for food in nextfood:
+        if pacposition == food:
+            features['food'] == 1
         if util.manhattanDistance(pacposition, food) < 4:
             features['foodclose'] = 1
+        else:
+            features['foodfar'] = 1
 
     return features
 
