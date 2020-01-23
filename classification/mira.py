@@ -107,18 +107,18 @@ class MiraClassifier:
         maxAccurate = 0
         minC = 100000000
         for key in allweights:
-            print "key", key
+           # print "key", key
             if key[1] == maxAccurate:
                 if key[0] < minC:
                     self.weights = allweights[key].values()
                     minC = key[0]
-                    print "lowestk", key
+                    #print "lowestk", key
 
             if key[1] > maxAccurate:
                 maxAccurate = key[1]
                 minC = key[0]
                 self.weights = allweights[key].values()      
-                print "maxkey", key                
+                #print "maxkey", key                
 
         
 
