@@ -242,6 +242,9 @@ def enhancedPacmanFeatures(state, action):
         #if ghostpos == pacposition:
             #features['ghost'] = 1
 
+    #for ghostst in ghoststates:
+        #features[ghostst.getPosition()] = 1
+
     for ghoststate in ghoststates:
         if ghoststate.scaredTimer <= 0:
             features['scaredghosts'] = 0
@@ -258,11 +261,19 @@ def enhancedPacmanFeatures(state, action):
 
     fooddist = float('inf')
     for food in nextfood:
-        fooddist = min(util.manhattanDistance(food, pacposition), fooddist)
+        if food == pacposition:
+            features['food'] = 1
+        if util.manhattanDistance(pacposition, food) < 2:
+            features['food2'] = 1
+        if util.manhattanDistance(pacposition, food) < 3:
+            features['food3'] = 1
         if util.manhattanDistance(pacposition, food) < 4:
-            features['foodclose'] = 1
-        else:
-            features['foodfar'] = 1
+            features['food4'] = 1
+        fooddist = min(util.manhattanDistance(food, pacposition), fooddist)
+        #if util.manhattanDistance(pacposition, food) < 4:
+            #features['foodclose'] = 1
+        #else:
+            #features['foodfar'] = 1
 
     #features['capsuldist' + str(capsuldist)] = 1
     features['fooddist'] = fooddist
@@ -430,6 +441,8 @@ def readCommand( argv ):
 
     if(options.data=="digits"):
         legalLabels = range(10)
+    elif(options.data=="faces"):
+        legalLabels = range(2)
     else:
         legalLabels = ['Stop', 'West', 'East', 'North', 'South']
 
@@ -519,13 +532,20 @@ def runClassifier(args, options):
         rawTrainingData, trainingLabels = samples.loadPacmanData(trainingData, numTraining)
         rawValidationData, validationLabels = samples.loadPacmanData(validationData, numTest)
         rawTestData, testLabels = samples.loadPacmanData(testData, numTest)
-    else:
+    elif(options.data=="digits"):
         rawTrainingData = samples.loadDataFile("digitdata/trainingimages", numTraining,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
         trainingLabels = samples.loadLabelsFile("digitdata/traininglabels", numTraining)
         rawValidationData = samples.loadDataFile("digitdata/validationimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
         validationLabels = samples.loadLabelsFile("digitdata/validationlabels", numTest)
         rawTestData = samples.loadDataFile("digitdata/testimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
         testLabels = samples.loadLabelsFile("digitdata/testlabels", numTest)
+    elif(options.data=="faces"):
+        rawTrainingData = samples.loadDataFile("facedata/facedatatrain", numTraining, FACE_DATUM_WIDTH, FACE_DATUM_HEIGHT)
+        trainingLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTraining)
+        rawValidationData = samples.loadDataFile("facedata/facedatavalidation", numTest,FACE_DATUM_WIDTH, FACE_DATUM_HEIGHT)
+        validationLabels = samples.loadLabelsFile("facedata/facedatavalidationlabels", numTest)
+        rawTestData = samples.loadDataFile("facedata/facedatatest", numTest, FACE_DATUM_WIDTH, FACE_DATUM_HEIGHT)
+        testLabels = samples.loadLabelsFile("facedata/facedatatestlabels", numTest)
 
 
     # Extract features
