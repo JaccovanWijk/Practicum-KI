@@ -545,7 +545,7 @@ def runClassifier(args, options):
         validationLabels = samples.loadLabelsFile("digitdata/validationlabels", numTest)
         rawTestData = samples.loadDataFile("digitdata/testimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
         testLabels = samples.loadLabelsFile("digitdata/testlabels", numTest)
-    elif(options.data=="faces"):
+    elif(options.data=="faces"): #we basiccaly copied the digits assigments above and changed it to faces
         rawTrainingData = samples.loadDataFile("facedata/facedatatrain", numTraining, FACE_DATUM_WIDTH, FACE_DATUM_HEIGHT)
         trainingLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTraining)
         rawValidationData = samples.loadDataFile("facedata/facedatavalidation", numTest,FACE_DATUM_WIDTH, FACE_DATUM_HEIGHT)
