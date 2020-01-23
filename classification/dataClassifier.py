@@ -87,6 +87,11 @@ def enhancedFeatureExtractorDigit(datum):
     WhiteSpaces = 0
     Processed = [['no' for i in range(DIGIT_DATUM_WIDTH)] for j in range(DIGIT_DATUM_HEIGHT)]
 
+    ##
+    """
+    Below we count the pixels in the top half of the image and compare it with the bottom half.
+    We do the same with the right and left half of the image.
+     """
     for x in range(DIGIT_DATUM_WIDTH):
         for y in range(MiddleHeight):
             if datum.getPixel(x,y) > 0:
@@ -102,6 +107,13 @@ def enhancedFeatureExtractorDigit(datum):
             if datum.getPixel(z,y) > 0:
                 PixelsRight +=1
 
+    """
+    Below we start DFS to find how many whitespaces a image has, the amount of searches we need
+    to do is the amount of white spaces. We start on a pixel which is 0 and keep searching to find
+    the whole whitespace that that first pixel is part of. We mark this entire whitespace as seen
+    and then see if we can find another pixel=0 that has not been marked. If so we start the process
+    over again.
+     """
     for x in range(DIGIT_DATUM_WIDTH):
         for y in range(DIGIT_DATUM_HEIGHT):
             if(Processed[x][y] == 'no' and datum.getPixel(x,y) == 0):
@@ -142,6 +154,11 @@ def enhancedFeatureExtractorDigit(datum):
 
 def ProcessWhiteArea(datum, Processed, x, y):
 
+    """ this is the Recursively called funtion to do the DFS the essence is that
+    when we find a pixel that is not marked and is 0 we start looking at that pixels neighbours
+    to see if we can find more pixels with 0. You can also create a list of pixels around
+    the first pixel that are not marked and 0 but the way we implement here had better results
+    """
     Processed[x][y] = 'yes'
     ToProcess = []
 
@@ -168,7 +185,7 @@ def ProcessWhiteArea(datum, Processed, x, y):
     if (y - 1 >= 0):
         if (Processed[x][y-1] == 'no' and datum.getPixel(x,y-1) == 0):
             Processed = ProcessWhiteArea(datum, Processed, x, y-1)
-            
+
     if (y + 1 != DIGIT_DATUM_HEIGHT):
         if (Processed[x][y+1] == 'no' and datum.getPixel(x,y+1) == 0):
             Processed = ProcessWhiteArea(datum, Processed, x, y+1)
@@ -251,13 +268,6 @@ def enhancedPacmanFeatures(state, action):
             features['closeghost3'] = 1
         if util.manhattanDistance(pacposition, ghostpos) < 4:
             features['closeghost4'] = 1
-        #if util.manhattanDistance(pacposition, ghostpos) < 4:
-            #features['ghostclose'] = 1
-        #if ghostpos == pacposition:
-            #features['ghost'] = 1
-
-    #for ghostst in ghoststates:
-        #features[ghostst.getPosition()] = 1
 
     for ghoststate in ghoststates:
         if ghoststate.scaredTimer <= 0:
@@ -273,26 +283,6 @@ def enhancedPacmanFeatures(state, action):
         if util.manhattanDistance(pacposition, cap) < 4:
             features['capsule4'] = 1
 
-
-
-    #fooddist = float('inf')
-    #for food in nextfood:
-        #if food == pacposition:
-            #features['food'] = 1
-        #if util.manhattanDistance(pacposition, food) < 2:
-            #features['food2'] = 1
-        #if util.manhattanDistance(pacposition, food) < 3:
-            #features['food3'] = 1
-        #if util.manhattanDistance(pacposition, food) < 4:
-            #features['food4'] = 1
-        #fooddist = min(util.manhattanDistance(food, pacposition), fooddist)
-        #if util.manhattanDistance(pacposition, food) < 4:
-            #features['foodclose'] = 1
-        #else:
-            #features['foodfar'] = 1
-
-    #features['capsuldist' + str(capsuldist)] = 1
-    #features['fooddist'] = fooddist
     return features
 
 
