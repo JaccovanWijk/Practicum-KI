@@ -237,7 +237,7 @@ def enhancedPacmanFeatures(state, action):
                 distance = util.manhattanDistance(pacposition, (x, y))
                 if distance < mindisttofood:
                     mindisttofood = distance
-    features['minfood'] = mindisttofood
+    features['mindisttofood'] = mindisttofood
 
     for ghostpos in ghostspos:
         if ghostpos == pacposition:
