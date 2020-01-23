@@ -249,8 +249,8 @@ def enhancedPacmanFeatures(state, action):
             features['scaredghosts'] = 0
 
     for cap in capsules:
-        if cap == pacposition:
-            features['capsule'] = 1
+        if util.manhattanDistance(pacposition, cap) < 4:
+            features['capsuleclose'] = 1
 
     for food in nextfood:
         if util.manhattanDistance(pacposition, food) < 4:
