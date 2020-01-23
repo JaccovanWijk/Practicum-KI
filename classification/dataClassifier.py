@@ -154,6 +154,7 @@ def ProcessWhiteArea(datum, Processed, x, y):
         if (y + 1 != DIGIT_DATUM_HEIGHT):
             if (Processed[x+1][y+1] == 'no' and datum.getPixel(x+1,y+1) == 0):
                 Processed = ProcessWhiteArea(datum, Processed, x+1, y+1)
+
     if (x - 1 >= 0):
         if (Processed[x-1][y] == 'no' and datum.getPixel(x-1,y) == 0):
             Processed = ProcessWhiteArea(datum, Processed, x-1, y)
@@ -163,9 +164,11 @@ def ProcessWhiteArea(datum, Processed, x, y):
         if (y + 1 != DIGIT_DATUM_HEIGHT):
             if (Processed[x-1][y+1] == 'no' and datum.getPixel(x-1,y+1) == 0):
                 Processed = ProcessWhiteArea(datum, Processed, x-1, y+1)
+
     if (y - 1 >= 0):
         if (Processed[x][y-1] == 'no' and datum.getPixel(x,y-1) == 0):
             Processed = ProcessWhiteArea(datum, Processed, x, y-1)
+            
     if (y + 1 != DIGIT_DATUM_HEIGHT):
         if (Processed[x][y+1] == 'no' and datum.getPixel(x,y+1) == 0):
             Processed = ProcessWhiteArea(datum, Processed, x, y+1)
@@ -241,13 +244,13 @@ def enhancedPacmanFeatures(state, action):
 
     for ghostpos in ghostspos:
         if ghostpos == pacposition:
-            features['ghost'] = 1
+            features['closeghost'] = 1
         if util.manhattanDistance(pacposition, ghostpos) < 2:
-            features['ghost2'] = 1
+            features['closeghost2'] = 1
         if util.manhattanDistance(pacposition, ghostpos) < 3:
-            features['ghost3'] = 1
+            features['closeghost3'] = 1
         if util.manhattanDistance(pacposition, ghostpos) < 4:
-            features['ghost4'] = 1
+            features['closeghost4'] = 1
         #if util.manhattanDistance(pacposition, ghostpos) < 4:
             #features['ghostclose'] = 1
         #if ghostpos == pacposition:
